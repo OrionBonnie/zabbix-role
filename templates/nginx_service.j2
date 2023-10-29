@@ -1,0 +1,13 @@
+[Unit]
+Description=Nginx
+After=network.target
+
+[Service]
+Type=forking
+ExecStart={{ nginx_install_dir }}sbin/nginx
+ExecReload={{ nginx_install_dir }}sbin/nginx -s reload
+ExecStop={{ nginx_install_dir }}sbin/nginx -s stop
+
+[Install]
+WantedBy=multi-user.target
+

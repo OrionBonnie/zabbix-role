@@ -1,0 +1,14 @@
+#- include_tasks: install_Server.yaml
+#  when: ansible_hostname is match ("zabbix-server")
+#- include_tasks: install_Agent.yaml
+#  when: ansible_hostname is not match ("database")
+- include_tasks: database.yaml
+  when: ansible_hostname is match ("database")
+- include_tasks: install_Nginx.yaml
+  when: ansible_hostname is match ("zabbix-server")
+- include_tasks: install_PHP.yaml
+  when: ansible_hostname is match ("zabbix-server")
+- include_tasks: config_Zabbix.yaml
+  when: ansible_hostname is match ("zabbix-server")
+- include_tasks: config_Agent.yaml
+  when: ansible_hostname is not match ("database")

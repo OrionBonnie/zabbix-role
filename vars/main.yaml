@@ -1,0 +1,15 @@
+#---------------Zabbix Setting----------------#
+server_ip: 192.168.254.37                     #Zabbix Server IP, Should Stay Consistent To The One On Inventory List
+#---------------Database Setting--------------#
+database_ip: 192.168.254.32                   #Database IP, Should Stay Consistent To The One On Inventory List
+db_socket: /tmp/mysql.sock                    #Socket File Of Your Database
+db_root_password: 123                         #Database Root Admin Password
+db_zabbix_password: 123456789Qq.              #Password For Zabbix Server And Zabbix Web
+#----------------Nginx Setting----------------#
+nginx_ver: 1.24.0                             #Nginx Version That Would Be Installed
+nginx_install_dir: /usr/local/nginx/          #Define Where Nginx Should Be Installed
+#-----------------PHP Setting-----------------#
+post_max_size: 16                             #\
+max_input_time: 300                           #->Increase The Value If Performance Issue Occurs
+max_execution_time: 300                       #/
+####This Is The Minimun Requirement For PHP####

@@ -1,0 +1,16 @@
+- name: Get Repo
+  shell: rpm -Uvh https://repo.zabbix.com/zabbix/4.0/rhel/7/x86_64/zabbix-release-4.0-1.el7.noarch.rpm 
+  warn: false
+- name: Download And Install Zabbix-Server From Aliyun Mirror Source
+  yum:
+    name:  "{{ Package }}"
+    state: present
+  vars:
+    Package:
+    - iksemel
+    - iksemel-devel
+    - fping 
+    - https://mirrors.aliyun.com/zabbix/zabbix/4.0/rhel/7/x86_64/zabbix-agent-4.0.49-1.el7.x86_64.rpm
+    - https://mirrors.aliyun.com/zabbix/zabbix/4.0/rhel/7/x86_64/zabbix-get-4.0.49-1.el7.x86_64.rpm
+    - https://mirrors.aliyun.com/zabbix/zabbix/4.0/rhel/7/x86_64/zabbix-server-mysql-4.0.49-1.el7.x86_64.rpm
+    - https://mirrors.aliyun.com/zabbix/zabbix/4.0/rhel/7/x86_64/zabbix-web-mysql-4.0.49-1.el7.noarch.rpm

@@ -1,0 +1,16 @@
+- name: Nginx Config Changed
+  systemd:
+    name: nginx
+    state: reloaded
+- name: PHP Config Changed
+  systemd:
+    name: php-fpm
+    state: restarted
+- name: Zabbix Server Config Changed
+  systemd:
+    name: zabbix-server
+    state: restarted
+- name: Zabbix Agent Config Changed
+  systemd:
+    name: zabbix-agent
+    state: restarted

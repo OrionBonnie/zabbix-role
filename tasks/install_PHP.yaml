@@ -1,0 +1,20 @@
+- name: Yum Install PHP
+  yum:
+    name: "{{ package }}"
+  vars:
+    package:
+      - php
+      - php-mysql
+      - php-devel
+      - php-fpm
+- name: Config PHP For Zabbix
+  template:
+    src: ./php.ini.j2
+    dest: /etc/php.ini
+  notify:
+    - PHP Config Changed
+- name: Start PHP Service
+  systemd:
+    name: php-fpm
+    state: started
+    enabled: yes

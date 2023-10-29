@@ -1,0 +1,22 @@
+- name: Sending SQL File To Database Server
+  copy:
+    src: ../files/create.sql.gz
+    dest: /tmp/
+- name: Create Zabbix Database
+  mysql_db:
+    state: present
+    name: zabbix
+    encoding: utf8
+    collation: utf8_bin
+    login_unix_socket: "{{ db_socket }}"
+    login_password: "{{ db_root_password }}"
+- name: Creating User Zabbix
+  shell:
+    cmd: /usr/local/mysql/bin/mysql -uroot -p{{ db_root_password }} -e 'grant all on zabbix.* to "zabbix"@"%" identified by "{{ db_zabbix_password }}";grant all on zabbix.* to "zabbix"@"localhost" identified by "{{ db_zabbix_password }}";flush privileges' 
+- name: Import Database
+  mysql_db:
+    name: zabbix
+    state: import
+    target: /tmp/create.sql.gz
+    login_unix_socket: "{{ db_socket }}"
+    login_password: "{{ db_root_password }}"

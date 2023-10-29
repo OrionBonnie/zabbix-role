@@ -1,0 +1,16 @@
+- name: Backup Config File
+  copy: 
+    src: /etc/zabbix/zabbix_agentd.conf
+    dest: /etc/zabbix/zabbix_agentd.conf.bak
+    remote_src: yes
+- name: Modify Config File
+  template:
+    src: ./zabbix_agentd.conf.j2
+    dest: /etc/zabbix/zabbix_agentd.conf
+  notify:
+    - Zabbix Agent Config Changed
+- name: Start Agent Service
+  systemd:
+    name: zabbix-agent
+    state: started
+    enabled: yes

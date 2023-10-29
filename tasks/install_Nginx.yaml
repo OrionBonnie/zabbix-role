@@ -1,0 +1,55 @@
+- name: Download Dependencies For Nginx
+  yum:
+    name: "{{ Nginx_dependencies }}"
+    state: present
+  vars:
+    Nginx_dependencies:
+    - gcc
+    - zlib-devel
+    - pcre-devel
+- name: Download Nginx Package
+  get_url:
+    url: "http://nginx.org/download/nginx-{{ nginx_ver }}.tar.gz"
+    dest: /tmp/
+- name: Create User For Nginx
+  user:
+    state: present
+    name: nginx
+    shell: /sbin/nologin
+    create_home: false
+- name: Unzip And Untar Nginx Source
+  unarchive:
+    src: "/tmp/nginx-{{ nginx_ver }}.tar.gz"
+    dest: /tmp/
+    remote_src: yes
+- name: Pre-compile Nginx Source Using Script (configure)
+  script: "./nginx_config.sh {{ nginx_install_dir }} {{ nginx_ver }}"
+- name: Compile Nginx Source (make)
+  make:
+    chdir: "/tmp/nginx-{{ nginx_ver }}"
+- name: Install Nginx (make install)
+  make:
+    chdir: "/tmp/nginx-{{ nginx_ver }}"
+    target: install
+- name: Create Symbolic Link For Command Nginx
+  file:
+    state: link
+    src: "{{ nginx_install_dir }}sbin/nginx"
+    dest: "/usr/sbin/nginx"
+- name: Config Nginx For Zabbix & Create Systemd File
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: "./zabbix_nginx_config.j2", dest: "{{ nginx_install_dir }}conf/nginx.conf" }
+    - { src: "./nginx_service.j2", dest: "/usr/lib/systemd/system/nginx.service" }
+  notify:
+    - Nginx Config Changed
+- name: Reload Daemon
+  systemd:
+    daemon_reload: yes
+- name: Enable And Start Service
+  systemd:
+    name: nginx
+    state: started
+    enabled: true
