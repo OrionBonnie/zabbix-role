@@ -1,5 +1,8 @@
-#---------------Zabbix Setting----------------#
+#----------------Zabbix Setting---------------#
 server_ip: 192.168.254.37                     #Zabbix Server IP, Should Stay Consistent To The One On Inventory List
+mode: passive                                 #Agent Mode, active or passive, passive By Default
+auto-register: no                             #whether Or Not Use Auto Register For Agent(no/yes),If yes, active mode is needed
+auto-register-pass: registerZabbix            #Item Passcode For Auto Register Item
 #---------------Database Setting--------------#
 database_ip: 192.168.254.32                   #Database IP, Should Stay Consistent To The One On Inventory List
 db_socket: /tmp/mysql.sock                    #Socket File Of Your Database

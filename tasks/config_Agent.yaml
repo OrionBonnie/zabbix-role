@@ -5,8 +5,11 @@
     remote_src: yes
 - name: Modify Config File
   template:
-    src: ./zabbix_agentd.conf.j2
-    dest: /etc/zabbix/zabbix_agentd.conf
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { src: "./zabbix_agentd.conf.j2", dest: "/etc/zabbix/zabbix_agentd.conf" }
+    - { src: "./auto_register.j2", dest: "/etc/zabbix/zabbix_agentd.d/auto_register.conf" }
   notify:
     - Zabbix Agent Config Changed
 - name: Start Agent Service
